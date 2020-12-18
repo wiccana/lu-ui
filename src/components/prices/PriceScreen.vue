@@ -2,6 +2,11 @@
   <div>
     <PriceFilter/>
     <PriceTable/>
+    <div class="float-right my-4 mr-4">
+        <v-btn color="primary" >
+                Guardar
+        </v-btn>
+     </div>
   </div>
 </template>
 
