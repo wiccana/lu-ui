@@ -5,28 +5,22 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Casa Lumier Logo"
-          class="shrink mr-4"
-          contain
-          src="./assets/logo.png"
-          transition="scale-transition"
-          width="40"
-        />
-        <span class="mr-2">CASA LUMIER</span>
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-        <!-- <v-img
-          alt="Casa Lumier"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="./assets/isotipo_300.png"
-          width="100"
-        /> -->
-      </div>
+      <v-toolbar-title>Actualización de Precios</v-toolbar-title>
 
       <v-spacer></v-spacer>
+      
+      <v-img
+        alt="Casa Lumier Logo"
+        class="shrink mr-4"
+        right
+        contain
+        src="./assets/logo.png"
+        transition="scale-transition"
+        width="40"
+      />
+      <span class="mr-2">CASA LUMIER</span>
 
     </v-app-bar>
 

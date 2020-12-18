@@ -4,7 +4,13 @@
     <PriceTable/>
     <div class="float-right my-4 mr-4">
         <v-btn color="primary" >
-                Guardar
+          Guardar
+        <v-icon
+          dark
+          right
+        >
+          mdi-checkbox-marked-circle
+        </v-icon>
         </v-btn>
      </div>
   </div>
