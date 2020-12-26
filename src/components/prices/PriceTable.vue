@@ -38,49 +38,6 @@ export default {
     },
     
     methods: {
-      initialize(){
-        this.items =  [
-          {
-            id: 1,
-            name: 'Pinza plastico',
-            supplierName: 'Zatecno',
-            supplierID: 12,
-            code: 6.0,
-            category: 'Herramientas',
-            unitCost: 20,
-            unitPrice: 40,
-            lastUpdatedDate: '2020-12-17',
-            newUnitCost: null,
-            newUnitPrice: null
-          },
-          {
-            id: 2,
-            name: 'Pinza plastico',
-            supplierName: 'Zatecno',
-            supplierID: 12,
-            code: 6.0,
-            category: 'Herramientas',
-            unitCost: 20,
-            unitPrice: 40,
-            lastUpdatedDate: '2020-12-17',
-            newUnitCost: null,
-            newUnitPrice: null
-          },
-          {
-            id: 3,
-            name: 'Lamparita 12v',
-            supplierName: 'Zatecno',
-            supplierID: 12,
-            code: 6.0,
-            category: 'Lamparas',
-            unitCost: 20,
-            unitPrice: 40,
-            date: '2020-12-15',
-            newUnitCost: null,
-            newUnitPrice: null
-          },
-        ]
-      },
       searchBySupplier(){
         console.log('searching by supplier');
         axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
@@ -89,8 +46,9 @@ export default {
         this.items = result.data;
         // this.items = details;
         console.log(this.items);
-    })
-      }
+         })
+      },
+ 
     },
 
  computed: {
