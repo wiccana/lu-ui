@@ -32,6 +32,7 @@ export default {
     watch: {
       supplier: function(supplier, old){
         console.log("new supplier: " + supplier, " old: " + old)
+        this.searchBySupplier()
       }
 
     },
@@ -82,12 +83,12 @@ export default {
       },
       searchBySupplier(){
         console.log('searching by supplier');
-          axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
-        let resultado = result;
-        console.log('result' + resultado);
-        let details = result.data;
-        this.items = details;
-        console.log(details);
+        axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
+        // let resultado = result;
+        // console.log('result' + resultado);
+        this.items = result.data;
+        // this.items = details;
+        console.log(this.items);
     })
       }
     },
