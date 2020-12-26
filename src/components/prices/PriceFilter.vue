@@ -1,7 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row align="top">
-
+    <v-row>
          <v-col
           cols="12"
           md="3"
@@ -22,6 +21,7 @@
            item-text="agency_name"
            item-value="person_id"
           label="Proveedor"
+          @change="selectSupplier"
           outlined
         ></v-select>
       </v-col>
@@ -55,16 +55,29 @@ export default {
   name: 'PriceFilter',
   data: () => ({
       items: [],
-      category: ""
+      category: "",
+      // supplier: null
     }),
   async created() {
     axios.get("http://localhost:8080/supplier").then((result) => {
-        let resultado = result;
-        console.log('result' + resultado);
         let suppliers = result.data;
         this.items = suppliers;
         console.log(suppliers);
     })
   },
+  methods: {
+      // selectSupplier(selectedSupplier){
+      //   console.log('Selecting supplier: ' + selectedSupplier);
+      //   this.supplier = selectedSupplier.person_id;
+      //   this.$emit('set-supplier', selectedSupplier);
+      // },
+      selectSupplier: function(supplier) {
+        console.log('Selecting supplier: ' + supplier);
+        this.$emit('set-supplier', supplier);
+     }
+      
+      
+  }
 }
+
 </script>

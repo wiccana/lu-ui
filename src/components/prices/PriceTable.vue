@@ -13,19 +13,28 @@
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
   name: 'PriceTable',
   data () {
       return {
         search: '',
-        items: []
+        items: [],
       }
+    },
+    props : {
+      supplier: Number
     },
     created() {
         console.log()
         this.initialize()
       },
+    watch: {
+      supplier: function(supplier, old){
+        console.log("new supplier: " + supplier, " old: " + old)
+      }
+
+    },
     
     methods: {
       initialize(){
@@ -70,6 +79,16 @@ export default {
             newUnitPrice: null
           },
         ]
+      },
+      searchBySupplier(){
+        console.log('searching by supplier');
+          axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
+        let resultado = result;
+        console.log('result' + resultado);
+        let details = result.data;
+        this.items = details;
+        console.log(details);
+    })
       }
     },
 

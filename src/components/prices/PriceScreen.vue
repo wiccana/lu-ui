@@ -1,7 +1,7 @@
 <template>
   <div>
-    <PriceFilter/>
-    <PriceTable/>
+    <PriceFilter @set-supplier="setSupplier"/>
+    <PriceTable :supplier="supplier"/>
     <div class="float-right my-4 mr-4">
         <v-btn color="primary" >
           Guardar
@@ -24,6 +24,18 @@ export default {
   components: {
     PriceFilter,
      PriceTable
-   }
+   },
+   data () {
+        return {
+            supplier: null,
+        }
+    },
+  methods: {
+        setSupplier: function(supplier) {
+        console.log('Price ScreenSelecting supplier: ' + supplier);
+        this.supplier = supplier
+
+     }
+  }
 }
 </script>
