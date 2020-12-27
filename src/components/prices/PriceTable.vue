@@ -80,13 +80,13 @@ export default {
     watch: {
       supplier: function(supplier, old){
         console.log("new supplier: " + supplier, " old: " + old)
-        this.searchBySupplier()
+        this.searchItems()
       }
 
     },
     
     methods: {
-      searchBySupplier(){
+      searchItems(){
         console.log('searching by supplier');
         axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
         // let resultado = result;
@@ -122,11 +122,16 @@ export default {
         this.items[row].unit_price = parseInt(inputValue);
 
       },
-     save: function(){
-       console.log('Guardar:')
-         axios.post("http://localhost:8080/items", this.items)
-        .then(response => console.log(response));
-     }
+      save: function () {
+        axios.post("http://localhost:8080/items", 
+            this.items
+        ).then(response => {
+             console.log(response)
+             this.searchItems()
+        }).catch(e => {
+            console.log('error guardando cambios: ' + e);
+        });
+    }     
  
     },
 

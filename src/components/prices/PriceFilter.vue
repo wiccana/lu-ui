@@ -26,7 +26,16 @@
         ></v-select>
       </v-col>
 
-     
+       <v-col
+        class="pt-6"
+        cols="12"
+        md="3"
+      >
+    <v-checkbox
+      v-model="omitToday"
+      :label="`Omitir actualizados hoy`"
+    ></v-checkbox>
+       </v-col>
 
       <v-col
         class="pt-6"
@@ -39,6 +48,7 @@
       small
       color="primary"
     >
+    
       <v-icon dark>
         mdi-magnify
       </v-icon>
@@ -56,6 +66,7 @@ export default {
   data: () => ({
       items: [],
       category: "",
+      omitToday: true
       // supplier: null
     }),
   async created() {
@@ -66,11 +77,6 @@ export default {
     })
   },
   methods: {
-      // selectSupplier(selectedSupplier){
-      //   console.log('Selecting supplier: ' + selectedSupplier);
-      //   this.supplier = selectedSupplier.person_id;
-      //   this.$emit('set-supplier', selectedSupplier);
-      // },
       selectSupplier: function(supplier) {
         console.log('Selecting supplier: ' + supplier);
         this.$emit('set-supplier', supplier);
