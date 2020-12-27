@@ -32,7 +32,7 @@
         md="3"
       >
     <v-checkbox
-      v-model="omitToday"
+      v-model="extoday"
       :label="`Omitir actualizados hoy`"
     ></v-checkbox>
        </v-col>
@@ -66,10 +66,11 @@ export default {
   data: () => ({
       items: [],
       category: "",
-      omitToday: true
-      // supplier: null
+      extoday: true,
+      supplier: ''
     }),
   async created() {
+    //filling suppliers combobox
     axios.get("http://localhost:8080/supplier").then((result) => {
         let suppliers = result.data;
         this.items = suppliers;
@@ -79,10 +80,15 @@ export default {
   methods: {
       selectSupplier: function(supplier) {
         console.log('Selecting supplier: ' + supplier);
-        this.$emit('set-supplier', supplier);
+        this.supplier  = supplier;
+        this.$emit('set-search-params', this.searchParams);
      }
-      
-      
+  },
+  computed: {
+    searchParams: function () {
+      console.log('updating search params');
+      return 'category&supplier=' + this.supplier + '&extoday=' + this.extoday;
+    }
   }
 }
 

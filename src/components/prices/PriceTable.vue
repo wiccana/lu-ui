@@ -64,22 +64,21 @@ export default {
   data () {
       return {
         expanded: [],
-      singleExpand: false,
- 
+        singleExpand: false,
         search: '',
         items: [],
       }
     },
     props : {
-      supplier: Number
+      params: String
     },
     created() {
         console.log()
         // this.initialize()
       },
     watch: {
-      supplier: function(supplier, old){
-        console.log("new supplier: " + supplier, " old: " + old)
+      params: function(params, old){
+        console.log("new supplier: " + params, " old: " + old)
         this.searchItems()
       }
 
@@ -87,8 +86,8 @@ export default {
     
     methods: {
       searchItems(){
-        console.log('searching by supplier');
-        axios.get("http://localhost:8080/details?category&supplier=" + this.supplier).then((result) => {
+        console.log('refreshing details table');
+        axios.get("http://localhost:8080/details?" + this.params).then((result) => {
         // let resultado = result;
         // console.log('result' + resultado);
         this.items = result.data;
@@ -123,15 +122,22 @@ export default {
 
       },
       save: function () {
+        let updatedItems = this.filterUpdatedItems(this.items);
         axios.post("http://localhost:8080/items", 
-            this.items
+            updatedItems
         ).then(response => {
              console.log(response)
              this.searchItems()
         }).catch(e => {
             console.log('error guardando cambios: ' + e);
         });
-    }     
+      },
+      filterUpdatedItems(items){
+        let filtered = items.filter(item => 
+          !isNaN(item.cost_price) && !isNaN(item.unit_price)
+        );
+        return filtered;
+      }
  
     },
 

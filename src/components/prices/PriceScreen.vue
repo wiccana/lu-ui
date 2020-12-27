@@ -1,7 +1,7 @@
 <template>
   <div>
-    <PriceFilter @set-supplier="setSupplier"/>
-    <PriceTable :supplier="supplier"/>
+    <PriceFilter @set-search-params="setSearchParams"/>
+    <PriceTable :params="params"/>
    
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
    },
    data () {
         return {
-            supplier: null,
+            params: '',
         }
     },
   methods: {
@@ -25,7 +25,11 @@ export default {
         console.log('Price ScreenSelecting supplier: ' + supplier);
         this.supplier = supplier
 
-     }
+     },
+      setSearchParams: function(params){
+        console.log('search params in screen ' + params)
+        this.params = params;
+      } 
   }
 }
 </script>
