@@ -42,10 +42,10 @@
              {{item.unitPrice}}
           </td>
           <td class="d-block d-sm-table-cell">
-             <input class="newValues" :value="item.cost_price" :id="item.item_id" @change="updateCost" type="text">
+             <input class="newValues" :value="item.cost_price" :id="'c'+item.item_id" @change="updateCost" type="text">
           </td>
           <td class="d-block d-sm-table-cell ">
-              <input class="newValues" :value="item.unit_price" :id="item.item_id" @change="updatePrice" type="text">
+              <input class="newValues" :value="item.unit_price" :id="'p'+item.item_id" @change="updatePrice" type="text">
           </td>
         </tr>
       </template>
@@ -104,30 +104,36 @@ export default {
          })
       },
       updateCost(e){
-        let itemId = e.target.id;
-        let inputValue = e.target.value
-        let row = null;
-        //indexOf
-        this.items.forEach(function(item, i) {
-          if (itemId == item.item_id){
-            row = i;
-          }
-        });
+        let itemId = e.target.id.substring(1);
+        let inputValue = e.target.value;
+        let row =   this.idIndexOf(itemId);
+        //update cost
         this.items[row].cost_price = parseInt(inputValue);
-
+        //update price
+        let prevCost = this.items[row].unitCost;
+        let prevPrice = this.items[row].unitPrice;
+        let prevDiff = prevPrice - prevCost;
+        console.log('Prev Diff: ' + prevDiff);
+        let prevRent = (prevDiff * 100) / prevCost;
+        console.log('Prev REnt: ' + prevRent);
+        let newCost = this.items[row].cost_price;
+        this.items[row].unit_price = newCost + ( newCost  * prevRent / 100);
       },
        updatePrice(e){
-        let itemId = e.target.id;
-        let inputValue = e.target.value
-        let row = null;
-        //indexOf
-        this.items.forEach(function(item, i) {
-          if (itemId == item.item_id){
-            row = i;
-          }
-        });
+        let itemId = e.target.id.substring(1);
+        let inputValue = e.target.value;
+        let row =   this.idIndexOf(itemId);
         this.items[row].unit_price = parseInt(inputValue);
-
+      },
+      idIndexOf(itemId){
+        let row = -1;
+        for (const item of this.items){
+           row ++;
+           if (parseInt(itemId) === item.item_id){
+             break;
+           }
+        }
+        return row;
       },
       save: function () {
         let updatedItems = this.filterUpdatedItems(this.items);
