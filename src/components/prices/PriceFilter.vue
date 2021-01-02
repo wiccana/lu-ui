@@ -33,6 +33,7 @@
       >
     <v-checkbox
       v-model="extoday"
+      @change="setExToday"
       :label="`Omitir actualizados hoy`"
     ></v-checkbox>
        </v-col>
@@ -74,6 +75,8 @@ export default {
     axios.get("http://localhost:8080/supplier").then((result) => {
         let suppliers = result.data;
         this.items = suppliers;
+        let empty = {"person_id": "", "company_name": "TODOS", "agency_name": "TODOS"}
+        this.items.unshift(empty);
         console.log(suppliers);
     })
   },
@@ -81,6 +84,11 @@ export default {
       selectSupplier: function(supplier) {
         console.log('Selecting supplier: ' + supplier);
         this.supplier  = supplier;
+        this.$emit('set-search-params', this.searchParams);
+     },
+     setExToday: function(extoday) {
+        console.log('Changing exclude today to: ' + extoday);
+        this.extoday  = extoday;
         this.$emit('set-search-params', this.searchParams);
      }
   },

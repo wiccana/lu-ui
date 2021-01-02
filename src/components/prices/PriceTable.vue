@@ -123,18 +123,20 @@ export default {
       },
       save: function () {
         let updatedItems = this.filterUpdatedItems(this.items);
-        axios.post("http://localhost:8080/items", 
-            updatedItems
-        ).then(response => {
-             console.log(response)
-             this.searchItems()
-        }).catch(e => {
-            console.log('error guardando cambios: ' + e);
-        });
+        if (updatedItems.length > 0){
+          axios.post("http://localhost:8080/items", 
+              updatedItems
+          ).then(response => {
+               console.log(response)
+               this.searchItems()
+          }).catch(e => {
+              console.log('error guardando cambios: ' + e);
+          });
+        }
       },
       filterUpdatedItems(items){
         let filtered = items.filter(item => 
-          !isNaN(item.cost_price) && !isNaN(item.unit_price)
+          item.cost_price && item.unit_price && !isNaN(item.cost_price) && !isNaN(item.unit_price)
         );
         return filtered;
       }
