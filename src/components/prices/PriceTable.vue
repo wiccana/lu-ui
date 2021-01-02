@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-card-title class="col-md-4">
+      <!-- Búsqueda dentro de la tabla -->
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+
     <v-data-table
       :headers="headers"
       :items="items"
@@ -10,11 +21,8 @@
       :single-expand="singleExpand"
          >
 
-       <template v-slot:item="{item }">
+       <template v-slot:item="{item}">
         <tr>
-          <!-- <td>
-            <v-btn @click="expand(!isExpanded)">Expand</v-btn>
-          </td> -->
            <td class="d-block d-sm-table-cell">
              {{item.name}}
           </td>
@@ -149,11 +157,20 @@ export default {
           {
             text: 'Item',
             align: 'start',
+            filterable: true,
             sortable: true,
             value: 'name',
           },
           { text: 'Proveedor', value: 'supplierName' },
-          { text: 'Categoria', value: 'category' },
+            {
+            text: 'Categoria',
+            value: 'category',
+            filter: value => {
+              if (!this.category) return true
+
+              return value < parseInt(this.category)
+            },
+          },
           { text: 'Fecha', value: 'date' },
           { text: 'Costo', value: 'unitCost' },
           { text: 'Precio', value: 'unitPrice' },
