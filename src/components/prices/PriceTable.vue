@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-card-title class="col-md-4">
+    <v-card-title >
+      <!-- Actualización de Precios
+      <v-spacer></v-spacer> -->
       <!-- Búsqueda dentro de la tabla -->
       <v-text-field
         v-model="search"
@@ -9,6 +11,18 @@
         single-line
         hide-details
       ></v-text-field>
+      <v-spacer></v-spacer>
+      <div class="float-right my-4 mr-4">
+        <v-btn color="primary" @click="save">
+          Guardar
+        <v-icon
+          dark
+          right
+        >
+          mdi-checkbox-marked-circle
+        </v-icon>
+        </v-btn>
+     </div>
     </v-card-title>
 
     <v-data-table
@@ -45,29 +59,25 @@
              <input class="newValues" :value="item.cost_price" :id="'c'+item.item_id" @change="updateCost" type="text">
           </td>
           <td class="d-block d-sm-table-cell" :id="'a'+item.item_id">
-             {{item.rise}}
+              <v-chip text-color="white"
+              :color="getRiseColor(item.rise)"
+            >
+              {{ item.rise }}
+            </v-chip>
           </td>
           <td class="d-block d-sm-table-cell">
               <input class="newValues" :value="item.unit_price" :id="'p'+item.item_id" @change="updatePrice" type="text">
           </td>
           <td class="d-block d-sm-table-cell" :id="'r'+item.item_id">
+            <v-chip text-color="white"  :color="getProfitColor(item.profit)">
              {{item.profit}}
+              </v-chip>
           </td>
         </tr>
       </template>
 
     </v-data-table>
-     <div class="float-right my-4 mr-4">
-        <v-btn color="primary" @click="save">
-          Guardar
-        <v-icon
-          dark
-          right
-        >
-          mdi-checkbox-marked-circle
-        </v-icon>
-        </v-btn>
-     </div>
+     
   </div>
 </template>
 
@@ -94,7 +104,14 @@ export default {
       params: function(params, old){
         console.log("new supplier: " + params, " old: " + old)
         this.searchItems()
-      }
+      },
+    //  $props: {
+    //       handler() {
+    //         this.parseData();
+    //       },
+    //       deep: true,
+    //       immediate: true
+    //   }
 
     },
     
@@ -134,8 +151,8 @@ export default {
           let costDiff = newCost - prevCost;
           //update Aumento y Rentabilidad
           let incremenet = (costDiff * 100) / prevCost;
-          this.items[row].rise = Math.round(incremenet) + "%";
-          this.items[row].profit  = prevRent + "%";
+          this.items[row].rise = Math.round(incremenet);
+          this.items[row].profit  =  Math.round(prevRent);
         }
       },
        updatePrice(e){
@@ -147,7 +164,7 @@ export default {
         //calculate new revenue
         let diff = this.items[row].unit_price - this.items[row].cost_price;
         let rent =  (diff * 100) / this.items[row].cost_price;
-        this.items[row].profit =  Math.round(rent) + "%";
+        this.items[row].profit =  Math.round(rent);
        
       },
       idIndexOf(itemId){
@@ -178,7 +195,20 @@ export default {
           item.cost_price && item.unit_price && !isNaN(item.cost_price) && !isNaN(item.unit_price)
         );
         return filtered;
-      }
+      },
+      getRiseColor (number) {
+        if (number === null) return 'default'
+        else if (number === 0) return 'indigo'
+        else if (number < 0) return 'red'
+        else if (number > 50) return 'orange'
+        else return 'primary'
+      },
+      getProfitColor (number) {
+        if (number === null) return 'default'
+        else if (number < 55) return 'red'
+        else if (number > 55 && number < 150 ) return 'primary'
+        else return 'green'
+      },
  
     },
 
@@ -198,9 +228,9 @@ export default {
           { text: 'Costo', value: 'unitCost' },
           { text: 'Precio', value: 'unitPrice' },
           { text: 'Nuevo Costo', value: 'cost_price' },
-          { text: 'Aumento', value: 'unitPrice' },
+          { text: 'Aumento %', value: 'unitPrice' },
           { text: 'Nuevo Precio', value: 'unit_price' },
-          { text: 'Rentabilidad', value: 'unitPrice' },
+          { text: 'Rentabilidad %', value: 'unitPrice' },
 
         ]
       },
