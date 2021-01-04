@@ -1,9 +1,6 @@
 <template>
   <div>
     <v-card-title >
-      <!-- Actualización de Precios
-      <v-spacer></v-spacer> -->
-      <!-- Búsqueda dentro de la tabla -->
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -12,17 +9,7 @@
         hide-details
       ></v-text-field>
       <v-spacer></v-spacer>
-      <div class="float-right my-4 mr-4">
-        <v-btn color="primary" @click="save">
-          Guardar
-        <v-icon
-          dark
-          right
-        >
-          mdi-checkbox-marked-circle
-        </v-icon>
-        </v-btn>
-     </div>
+       <PriceConfirm :items="items" @refresh-items="searchItems"/>
     </v-card-title>
 
     <v-data-table
@@ -77,44 +64,36 @@
       </template>
 
     </v-data-table>
-     
+   
   </div>
 </template>
 
 <script>
+import PriceConfirm from './PriceConfirm.vue'
 import axios from 'axios';
 export default {
   name: 'PriceTable',
+   components: {
+    PriceConfirm
+   },
   data () {
       return {
         expanded: [],
         singleExpand: false,
         search: '',
         items: [],
+        errors: 0
       }
     },
     props : {
       params: String
     },
-    created() {
-        console.log()
-        // this.initialize()
-      },
     watch: {
       params: function(params, old){
         console.log("new supplier: " + params, " old: " + old)
         this.searchItems()
-      },
-    //  $props: {
-    //       handler() {
-    //         this.parseData();
-    //       },
-    //       deep: true,
-    //       immediate: true
-    //   }
-
+      }
     },
-    
     methods: {
       searchItems(){
         console.log('refreshing details table');
@@ -177,28 +156,10 @@ export default {
         }
         return row;
       },
-      save: function () {
-        let updatedItems = this.filterUpdatedItems(this.items);
-        if (updatedItems.length > 0){
-          axios.post("http://localhost:8080/items", 
-              updatedItems
-          ).then(response => {
-               console.log(response)
-               this.searchItems()
-          }).catch(e => {
-              console.log('error guardando cambios: ' + e);
-          });
-        }
-      },
-      filterUpdatedItems(items){
-        let filtered = items.filter(item => 
-          item.cost_price && item.unit_price && !isNaN(item.cost_price) && !isNaN(item.unit_price)
-        );
-        return filtered;
-      },
+     
       getRiseColor (number) {
         if (number === null) return 'default'
-        else if (number < 1) return 'red'
+        else if (number < 1)  return 'red'
         else if (number === 0) return 'default'
         else if (number > 50) return 'orange'
         else return 'primary'
@@ -243,8 +204,5 @@ export default {
 .newValues {
   border-style: dashed;
   width: 90px;
-}
-.percent {
-  border-style: dotted;
 }
 </style>
