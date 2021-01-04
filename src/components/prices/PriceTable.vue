@@ -198,8 +198,8 @@ export default {
       },
       getRiseColor (number) {
         if (number === null) return 'default'
-        else if (number === 0) return 'indigo'
-        else if (number < 0) return 'red'
+        else if (number < 1) return 'red'
+        else if (number === 0) return 'default'
         else if (number > 50) return 'orange'
         else return 'primary'
       },
