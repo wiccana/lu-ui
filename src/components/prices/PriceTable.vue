@@ -25,6 +25,9 @@
        <template v-slot:item="{item}">
         <tr>
            <td class="d-block d-sm-table-cell">
+             {{item.itemNumber}}
+          </td>
+           <td class="d-block d-sm-table-cell">
              {{item.name}}
           </td>
           <td class="d-block d-sm-table-cell">
@@ -176,6 +179,7 @@ export default {
  computed: {
       headers () {
         return [
+           { text: 'Codigo', value: 'itemNumber' },
           {
             text: 'Item',
             align: 'start',
