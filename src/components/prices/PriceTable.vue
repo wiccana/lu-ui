@@ -33,7 +33,7 @@
              {{item.category}}
           </td>
           <td class="d-block d-sm-table-cell">
-             {{item.date}}
+             {{item.update}}
           </td>
           <td class="d-block d-sm-table-cell">
              {{item.unitCost}}
@@ -44,8 +44,14 @@
           <td class="d-block d-sm-table-cell">
              <input class="newValues" :value="item.cost_price" :id="'c'+item.item_id" @change="updateCost" type="text">
           </td>
-          <td class="d-block d-sm-table-cell ">
+          <td class="d-block d-sm-table-cell" :id="'a'+item.item_id">
+             {{item.rise}}
+          </td>
+          <td class="d-block d-sm-table-cell">
               <input class="newValues" :value="item.unit_price" :id="'p'+item.item_id" @change="updatePrice" type="text">
+          </td>
+          <td class="d-block d-sm-table-cell" :id="'r'+item.item_id">
+             {{item.profit}}
           </td>
         </tr>
       </template>
@@ -107,23 +113,42 @@ export default {
         let itemId = e.target.id.substring(1);
         let inputValue = e.target.value;
         let row =   this.idIndexOf(itemId);
-        //update cost
-        this.items[row].cost_price = parseInt(inputValue);
-        //update price
-        let prevCost = this.items[row].unitCost;
-        let prevPrice = this.items[row].unitPrice;
-        let prevDiff = prevPrice - prevCost;
-        console.log('Prev Diff: ' + prevDiff);
-        let prevRent = (prevDiff * 100) / prevCost;
-        console.log('Prev REnt: ' + prevRent);
-        let newCost = this.items[row].cost_price;
-        this.items[row].unit_price = newCost + ( newCost  * prevRent / 100);
+       
+       if (inputValue === ''){
+         this.items[row].cost_price = '';
+         this.items[row].unit_price = '';
+         this.items[row].rise = '';
+         this.items[row].profit = '';
+        }else{
+          //update cost
+          this.items[row].cost_price = parseInt(inputValue);
+          //update price
+          let prevCost = this.items[row].unitCost;
+          let prevPrice = this.items[row].unitPrice;
+          let prevDiff = prevPrice - prevCost;
+          console.log('Prev Diff: ' + prevDiff);
+          let prevRent = (prevDiff * 100) / prevCost;
+          console.log('Prev REnt: ' + prevRent);
+          let newCost = Math.round(this.items[row].cost_price);
+          this.items[row].unit_price = Math.round(newCost + ( newCost  * prevRent / 100));
+          let costDiff = newCost - prevCost;
+          //update Aumento y Rentabilidad
+          let incremenet = (costDiff * 100) / prevCost;
+          this.items[row].rise = Math.round(incremenet) + "%";
+          this.items[row].profit  = prevRent + "%";
+        }
       },
        updatePrice(e){
         let itemId = e.target.id.substring(1);
-        let inputValue = e.target.value;
         let row =   this.idIndexOf(itemId);
+        let inputValue = e.target.value;
         this.items[row].unit_price = parseInt(inputValue);
+
+        //calculate new revenue
+        let diff = this.items[row].unit_price - this.items[row].cost_price;
+        let rent =  (diff * 100) / this.items[row].cost_price;
+        this.items[row].profit =  Math.round(rent) + "%";
+       
       },
       idIndexOf(itemId){
         let row = -1;
@@ -168,20 +193,14 @@ export default {
             value: 'name',
           },
           { text: 'Proveedor', value: 'supplierName' },
-            {
-            text: 'Categoria',
-            value: 'category',
-            filter: value => {
-              if (!this.category) return true
-
-              return value < parseInt(this.category)
-            },
-          },
-          { text: 'Fecha', value: 'date' },
+          {text: 'Categoria', value: 'category'},
+          { text: 'Fecha', value: 'update' },
           { text: 'Costo', value: 'unitCost' },
           { text: 'Precio', value: 'unitPrice' },
           { text: 'Nuevo Costo', value: 'cost_price' },
+          { text: 'Aumento', value: 'unitPrice' },
           { text: 'Nuevo Precio', value: 'unit_price' },
+          { text: 'Rentabilidad', value: 'unitPrice' },
 
         ]
       },
@@ -193,5 +212,9 @@ export default {
 <style scoped>
 .newValues {
   border-style: dashed;
+  width: 90px;
+}
+.percent {
+  border-style: dotted;
 }
 </style>
