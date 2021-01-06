@@ -11,7 +11,8 @@
        </v-btn>
     
     </div>
-    <div v-if="massive" class="blue lighten-5 d-flex justify-space-around align-center flex-grow-0 flex-shrink-0"  cols="2">
+  <div class="d-flex justify-space-around align-center" style="margin:auto">
+    <div v-if="massive" class="blue lighten-5 d-flex justify-space-around align-center"  style="min-width: 100px; max-width: 350px;">
       <v-btn
               icon
               color="indigo"
@@ -30,6 +31,7 @@
       </v-btn>
 
     </div>
+  </div>
   </div>
  
 </template>
