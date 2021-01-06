@@ -8,8 +8,7 @@
         single-line
         hide-details
       ></v-text-field>
-      <v-spacer></v-spacer>
-       <PriceConfirm :items="items" @refresh-items="searchItems"/>
+       
     </v-card-title>
 
     <v-data-table
@@ -72,42 +71,21 @@
 </template>
 
 <script>
-import PriceConfirm from './PriceConfirm.vue'
-import axios from 'axios';
+// import axios from 'axios';
 export default {
   name: 'PriceTable',
-   components: {
-    PriceConfirm
-   },
   data () {
       return {
         expanded: [],
         singleExpand: false,
         search: '',
-        items: [],
         errors: 0
       }
     },
     props : {
-      params: String
-    },
-    watch: {
-      params: function(params, old){
-        console.log("new supplier: " + params, " old: " + old)
-        this.searchItems()
-      }
+      items: Array
     },
     methods: {
-      searchItems(){
-        console.log('refreshing details table');
-        axios.get("http://localhost:8080/details?" + this.params).then((result) => {
-        // let resultado = result;
-        // console.log('result' + resultado);
-        this.items = result.data;
-        // this.items = details;
-        console.log(this.items);
-         })
-      },
       updateCost(e){
         let itemId = e.target.id.substring(1);
         let inputValue = e.target.value;

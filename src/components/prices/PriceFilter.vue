@@ -1,35 +1,24 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col
-        class="d-flex"
-        cols="12"
-        md="3"
-      >
-        <v-select
+    <div class="row row--dense">
+      <div class="col-sm-6 col-lg-4 col-6">
+          <v-select
           :items="items"
-           item-text="agency_name"
-           item-value="person_id"
+          item-text="agency_name"
+          item-value="person_id"
           label="Proveedor"
           @change="selectSupplier"
           outlined
         ></v-select>
-      </v-col>
-
-       <v-col
-        class="pt-6"
-        cols="12"
-        md="3"
-      >
-    <v-checkbox
+      </div>
+      <div class="col-sm-6 col-lg-4 col-6">
+          <v-checkbox
       v-model="extoday"
       @change="setExToday"
       :label="`Omitir actualizados hoy`"
     ></v-checkbox>
-       </v-col>
+      </div>
 
-    </v-row>
-  </v-container>
+  </div>  
 
 </template>
 <script>
@@ -42,18 +31,15 @@ export default {
       supplier: ''
     }),
   async created() {
-    //filling suppliers combobox
     axios.get("http://localhost:8080/supplier").then((result) => {
         let suppliers = result.data;
         this.items = suppliers;
         let empty = {"person_id": "", "company_name": "TODOS", "agency_name": "TODOS"}
         this.items.unshift(empty);
-        console.log(suppliers);
     })
   },
   methods: {
       selectSupplier: function(supplier) {
-        console.log('Selecting supplier: ' + supplier);
         this.supplier  = supplier;
         this.$emit('set-search-params', this.searchParams);
      },
