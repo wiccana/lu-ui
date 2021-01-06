@@ -1,90 +1,94 @@
 <template>
-  <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-         <v-btn color="primary" 
-          v-bind="attrs"
-          v-on="on"
-          @click="preview">
-          Guardar
-        <v-icon
-          dark
-          right
-        >
-          mdi-checkbox-marked-circle
-        </v-icon>
-        </v-btn>
-      </template>
+  <div>
 
-      <v-card>
-        <v-card-title class="headline grey lighten-2">
-          Confirmar Cambios
-        </v-card-title>
+    <div class="text-right">
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" 
+            v-bind="attrs"
+            v-on="on"
+            @click="preview">
+            Guardar
+          <v-icon
+            dark
+            right
+          >
+            mdi-checkbox-marked-circle
+          </v-icon>
+          </v-btn>
+        </template>
+      <div>
+    </div>
+        <v-card>
+          <v-card-title class="headline grey lighten-2">
+            Confirmar Cambios
+          </v-card-title>
 
-        <v-card-text>
-            <v-list>
-          <v-list-item>
-            <v-list-item-action>
-              <v-icon>mdi-check-bold</v-icon>
-            </v-list-item-action>
-
-            <v-list-item-content>
-              <v-list-item-title>Registros ok</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action>
-              {{ok}}
-            </v-list-item-action>
-          </v-list-item>
-
-           <v-list-item>
-            <v-list-item-action>
-              <v-icon>mdi-alert-box</v-icon>
+          <v-card-text>
+              <v-list>
+            <v-list-item>
+              <v-list-item-action>
+                <v-icon>mdi-check-bold</v-icon>
               </v-list-item-action>
 
-            <v-list-item-content>
-              <v-list-item-title>Posibles errores</v-list-item-title>
-            </v-list-item-content>
-             <v-list-item-action>
-              {{notOk}}
-            </v-list-item-action>
-          </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Registros ok</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                {{ok}}
+              </v-list-item-action>
+            </v-list-item>
 
-          <v-divider inset></v-divider>
+            <v-list-item>
+              <v-list-item-action>
+                <v-icon>mdi-alert-box</v-icon>
+                </v-list-item-action>
 
-          <v-list-item>
-            <v-list-item-action>
-              <v-icon>mdi-email</v-icon>
-            </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Posibles errores</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                {{notOk}}
+              </v-list-item-action>
+            </v-list-item>
 
-            <v-list-item-content>
-              <v-list-item-title>Total a confirmar</v-list-item-title>
-            </v-list-item-content>
-               <v-list-item-action>
-              {{filtered.length}}
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
+            <v-divider inset></v-divider>
 
-          
-        </v-card-text>
+            <v-list-item>
+              <v-list-item-action>
+                <v-icon>mdi-email</v-icon>
+              </v-list-item-action>
 
-        <v-divider></v-divider>
+              <v-list-item-content>
+                <v-list-item-title>Total a confirmar</v-list-item-title>
+              </v-list-item-content>
+                <v-list-item-action>
+                {{filtered.length}}
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="save"
-          >
-            Confirmar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+            
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="save"
+            >
+              Confirmar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
   </div>
 </template>
 <script>

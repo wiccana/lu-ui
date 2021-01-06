@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="secondary"
       dark
     >
     <v-app-bar-nav-icon></v-app-bar-nav-icon>

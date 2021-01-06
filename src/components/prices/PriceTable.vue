@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-card-title >
+    <v-card-title class="col-sm-6 col-lg-12 col-12" >
+      
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -9,6 +10,9 @@
         hide-details
       ></v-text-field>
        
+      <div class="col-sm-6 col-lg-4 col-12">
+          <PriceMassive :massive="false"/>
+      </div>
     </v-card-title>
 
     <v-data-table
@@ -72,6 +76,7 @@
 
 <script>
 // import axios from 'axios';
+import PriceMassive from './PriceMassive.vue'
 export default {
   name: 'PriceTable',
   data () {
@@ -81,6 +86,9 @@ export default {
         search: '',
         errors: 0
       }
+    },
+    components: {
+        PriceMassive
     },
     props : {
       items: Array
