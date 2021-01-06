@@ -101,10 +101,10 @@ export default {
         let row =   this.idIndexOf(itemId);
        
        if (inputValue === ''){
-         this.items[row].cost_price = '';
-         this.items[row].unit_price = '';
-         this.items[row].rise = '';
-         this.items[row].profit = '';
+         this.items[row].cost_price = null;
+         this.items[row].unit_price = null;
+         this.items[row].rise = null;
+         this.items[row].profit = null;
         }else{
           //update cost
           this.items[row].cost_price = parseInt(inputValue);
