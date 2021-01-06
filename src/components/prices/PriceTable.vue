@@ -11,7 +11,7 @@
       ></v-text-field>
        
       <div class="col-sm-6 col-lg-4 col-12">
-          <PriceMassive :massive="false"/>
+          <PriceMassive :massive="false" @set-multiple="setMultiple"/>
       </div>
     </v-card-title>
 
@@ -84,7 +84,8 @@ export default {
         expanded: [],
         singleExpand: false,
         search: '',
-        errors: 0
+        errors: 0,
+        massiveMode: false
       }
     },
     components: {
@@ -159,6 +160,9 @@ export default {
         else if (number > 55 && number < 150 ) return 'primary'
         else return 'green'
       },
+      setMultiple (value){
+        console.log('multipple selection table: ' + value)
+      }
  
     },
 
