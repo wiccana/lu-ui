@@ -11,22 +11,22 @@
       ></v-text-field>
        
       <div class="col-sm-6 col-lg-4 col-12">
-          <PriceMassive :massive="false" @set-multiple="setMultiple"/>
+          <PriceMassive :massive="false" @rise="rise"/>
       </div>
     </v-card-title>
 
     <v-data-table
       :headers="headers"
       :items="items"
+       @current-items="getFiltered"
       item-key="id"
       class="elevation-1"
       :search="search"
-      :expanded.sync="expanded"
-      :single-expand="singleExpand"
-         >
+           >
 
        <template v-slot:item="{item}">
-        <tr>
+        <!-- <tr  @click="item.selected?item.selected=false:item.selected=true" :class="item.selected? 'cyan' :''" > -->
+             <tr >
            <td class="d-block d-sm-table-cell">
              {{item.itemNumber}}
           </td>
@@ -81,11 +81,9 @@ export default {
   name: 'PriceTable',
   data () {
       return {
-        expanded: [],
-        singleExpand: false,
         search: '',
         errors: 0,
-        massiveMode: false
+        filtered: []
       }
     },
     components: {
@@ -95,19 +93,31 @@ export default {
       items: Array
     },
     methods: {
-      updateCost(e){
-        let itemId = e.target.id.substring(1);
-        let inputValue = e.target.value;
-        let row =   this.idIndexOf(itemId);
+      updateCost(e, itemId, percent){
+        let inputValue
+        let row
+        if(!itemId){
+          //aumento manual
+          itemId = e.target.id.substring(1);
+          inputValue = e.target.value;
+          row =   this.idIndexOf(itemId);
+          //update cost
+          this.items[row].cost_price = parseInt(inputValue);
+        }else{
+          //aplica aumento masivo
+          row = this.idIndexOf(itemId);
+          //update cost
+          let mult = parseInt( (parseInt(this.items[row].unitCost) * (100 + parseInt(percent)))) ;
+         this.items[row].cost_price = parseInt( mult /100);
+        }
+        console.log(percent)
        
-       if (inputValue === ''){
+       if (inputValue === ''){ //caso en que se borra manual
          this.items[row].cost_price = null;
          this.items[row].unit_price = null;
          this.items[row].rise = null;
          this.items[row].profit = null;
         }else{
-          //update cost
-          this.items[row].cost_price = parseInt(inputValue);
           //update price
           let prevCost = this.items[row].unitCost;
           let prevPrice = this.items[row].unitPrice;
@@ -160,11 +170,16 @@ export default {
         else if (number > 55 && number < 150 ) return 'primary'
         else return 'green'
       },
-      setMultiple (value){
-        console.log('multipple selection table: ' + value)
-      }
- 
-    },
+      rise (percent){
+        console.log('Aplicar aumento del: ' + percent)
+        this.filtered.forEach(item => this.updateCost(null,item.item_id, percent));
+      },
+      getFiltered(e){
+        console.log('filtered ' + e);
+        this.filtered = e;
+      },
+
+   },
 
  computed: {
       headers () {

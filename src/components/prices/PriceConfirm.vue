@@ -128,6 +128,7 @@ import axios from 'axios';
           }).catch(e => {
               console.log('error guardando cambios: ' + e);
           });
+          this.dialog = false;
         }
       },
        filterUpdatedItems(items){

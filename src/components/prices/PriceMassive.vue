@@ -5,7 +5,7 @@
               small
               color="purple"
               dark
-              @click="massive=true; multiple(true);"
+              @click="massive=true;"
             >
                Aplicar % 
        </v-btn>
@@ -16,7 +16,7 @@
       <v-btn class="padding10"
               icon
               color="indigo"
-              @click="massive=false; multiple(false);"
+              @click="massive=false;"
             >
           <v-icon>mdi-close-box</v-icon>
       </v-btn>
@@ -29,7 +29,7 @@
         ></v-text-field>
 
       </div>
-      <v-btn   class="ma-2 padding10"  outlined   color="purple">
+      <v-btn   class="ma-2 padding10"  outlined   @click="massive=false; rise();"  color="purple">
         Aplicar {{percent}}%  <v-icon>mdi-arrow-up</v-icon>
       </v-btn>
 
@@ -47,9 +47,8 @@
       }
     },
     methods: {
-      multiple: function(value){
-        console.log('multiple: ' + value)
-        this.$emit('set-multiple', value);
+      rise: function(){
+        this.$emit('rise', this.percent);
       } 
     }
 
