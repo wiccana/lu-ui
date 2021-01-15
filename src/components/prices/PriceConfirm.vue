@@ -120,7 +120,7 @@ import axios from 'axios';
       },
          save: function () {
         if (this.filtered.length > 0){
-          axios.post("http://localhost:8080/items", 
+          axios.post(this.$apiUrl+"/items", 
               this.filtered
           ).then(response => {
                console.log(response)

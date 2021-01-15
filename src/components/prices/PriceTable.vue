@@ -25,7 +25,6 @@
            >
 
        <template v-slot:item="{item}">
-        <!-- <tr  @click="item.selected?item.selected=false:item.selected=true" :class="item.selected? 'cyan' :''" > -->
              <tr >
            <td class="d-block d-sm-table-cell">
              {{item.itemNumber}}
@@ -94,6 +93,7 @@ export default {
     },
     methods: {
       updateCost(e, itemId, percent){
+        console.log('printing ' + this.$appName)
         let inputValue
         let row
         if(!itemId){
@@ -110,7 +110,6 @@ export default {
           let mult = parseInt( (parseInt(this.items[row].unitCost) * (100 + parseInt(percent)))) ;
          this.items[row].cost_price = parseInt( mult /100);
         }
-        console.log(percent)
        
        if (inputValue === ''){ //caso en que se borra manual
          this.items[row].cost_price = null;
@@ -122,16 +121,14 @@ export default {
           let prevCost = this.items[row].unitCost;
           let prevPrice = this.items[row].unitPrice;
           let prevDiff = prevPrice - prevCost;
-          console.log('Prev Diff: ' + prevDiff);
           let prevRent = (prevDiff * 100) / prevCost;
-          console.log('Prev REnt: ' + prevRent);
           let newCost = Math.round(this.items[row].cost_price);
           this.items[row].unit_price = Math.round(newCost + ( newCost  * prevRent / 100));
           let costDiff = newCost - prevCost;
           //update Aumento y Rentabilidad
           let incremenet = (costDiff * 100) / prevCost;
-          this.items[row].rise = Math.round(incremenet);
-          this.items[row].profit  =  Math.round(prevRent);
+          this.items[row].rise = Math.round(incremenet + Number.EPSILON * 100) / 100; //porcentaje aumento
+          this.items[row].profit  =  Math.round(incremenet + Number.EPSILON * 100) / 100;  //porcentaje rentabilidad
         }
       },
        updatePrice(e){
@@ -159,23 +156,21 @@ export default {
      
       getRiseColor (number) {
         if (number === null) return 'default'
-        else if (number < 1)  return 'red'
+        else if (number < this.$minRisePercent)  return 'red'
         else if (number === 0) return 'default'
-        else if (number > 50) return 'orange'
+        else if (number > this.$maxRisePercent) return 'purple'
         else return 'primary'
       },
       getProfitColor (number) {
         if (number === null) return 'default'
-        else if (number < 55) return 'red'
-        else if (number > 55 && number < 150 ) return 'primary'
-        else return 'green'
+        else if (number < this.$minRentPercent) return 'red'
+        else if (number > this.$minRentPercent && number < this.$maxRentPercent ) return 'primary'
+        else return 'purple'
       },
       rise (percent){
-        console.log('Aplicar aumento del: ' + percent)
         this.filtered.forEach(item => this.updateCost(null,item.item_id, percent));
       },
       getFiltered(e){
-        console.log('filtered ' + e);
         this.filtered = e;
       },
 
@@ -184,14 +179,8 @@ export default {
  computed: {
       headers () {
         return [
-           { text: 'Codigo', value: 'itemNumber' },
-          {
-            text: 'Item',
-            align: 'start',
-            filterable: true,
-            sortable: true,
-            value: 'name',
-          },
+          { text: 'Codigo', value: 'itemNumber' },
+          { text: 'Item', value: 'name' },
           { text: 'Proveedor', value: 'supplierName' },
           {text: 'Categoria', value: 'category'},
           { text: 'Fecha', value: 'update' },

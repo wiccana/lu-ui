@@ -33,9 +33,9 @@ export default {
     },
   methods: {
     searchItems(){
-        axios.get("http://localhost:8080/details?" + this.params).then((result) => {
+        axios.get(this.$apiUrl+"/details?" + this.params).then((result) => {
         this.items = result.data;
-        console.log(this.items);
+
          })
       },
       setSearchParams: function(params){

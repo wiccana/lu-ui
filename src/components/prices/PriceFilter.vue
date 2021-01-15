@@ -31,7 +31,7 @@ export default {
       supplier: ''
     }),
   async created() {
-    axios.get("http://localhost:8080/supplier").then((result) => {
+    axios.get(this.$apiUrl+"/supplier").then((result) => {
         let suppliers = result.data;
         this.items = suppliers;
         let empty = {"person_id": "", "company_name": "TODOS", "agency_name": "TODOS"}
