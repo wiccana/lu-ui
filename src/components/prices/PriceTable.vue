@@ -106,20 +106,18 @@ export default {
           this.items[row].profit = null;
         }else{  
             if(!percent){
-              console.log("aumento manual de costo")
               //aAUMENTO MANUAL DE COSTO
-              this.items[row].cost_price = parseFloat(e.target.value);
+              this.items[row].cost_price = Math.round(e.target.value);
+              //Aumento = ( nuevo costo - costo anterior) * 100) / costo anterior
+              this.items[row].rise =  Number.parseFloat(( ( parseFloat(this.items[row].cost_price) - parseFloat(this.items[row].unitCost)) * 100 ) / parseFloat(this.items[row].unitCost)).toFixed(2) 
             }else{
-              console.log("aumento masivo costo")
               //AUMENTO MASIVO DE COSTO, con itemId ya identificado
               //update cost
-              this.items[row].cost_price = Number.parseFloat( (parseFloat(this.items[row].unitCost) * (100 + parseFloat(percent))) /100).toFixed(2);
+              this.items[row].rise = parseFloat(percent)
+              this.items[row].cost_price = Math.ceil( (parseFloat(this.items[row].unitCost) * (100 + parseFloat(percent))) /100);
             }
           
             //ACTUALIZACIÓN DE PRECIO SEGÚN COSTO (MANUAL Y MASIVO)
-            console.log("actualizacion precio manual y masivo")
-            //Aumento = ( nuevo costo - costo anterior) * 100) / costo anterior
-             this.items[row].rise =  Number.parseFloat(( ( parseFloat(this.items[row].cost_price) - parseFloat(this.items[row].unitCost)) * 100 ) / parseFloat(this.items[row].unitCost)).toFixed(2) 
             //Rentabilidad = ( ( precio - costo ) * 100 ) / costo
             let profit = ( ( parseFloat(this.items[row].unitPrice) - parseFloat(this.items[row].unitCost )) * 100) / parseFloat(this.items[row].unitCost);
             this.items[row].profit = Number.parseFloat(profit).toFixed(2)
@@ -135,9 +133,7 @@ export default {
         this.items[row].unit_price = parseInt(inputValue);
 
         //calculate new revenue
-        let diff = this.items[row].unit_price - this.items[row].cost_price;
-        let rent =  (diff * 100) / this.items[row].cost_price;
-        this.items[row].profit =  Math.round(rent);
+        this.items[row].profit =  Number.parseFloat((parseFloat(this.items[row].unit_price) - parseFloat(this.items[row].cost_price) * 100) / parseFloat(this.items[row].cost_price)).toFixed(2);
        
       },
       idIndexOf(itemId){
@@ -198,6 +194,9 @@ export default {
 <style scoped>
 .newValues {
   border-style: dashed;
+  text-align: right;
+  border-width: thin;
   width: 90px;
+  padding-right: 5px;
 }
 </style>
