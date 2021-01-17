@@ -93,43 +93,40 @@ export default {
     },
     methods: {
       updateCost(e, itemId, percent){
-        console.log('printing ' + this.$appName)
-        let inputValue
-        let row
-        if(!itemId){
-          //aumento manual
+        //Datos previos: UnitCost y UnitPrice - Datos Nuevos: Cost_Price, Unit_price
+        if(!itemId){  //ItemId
           itemId = e.target.id.substring(1);
-          inputValue = e.target.value;
-          row =   this.idIndexOf(itemId);
-          //update cost
-          this.items[row].cost_price = parseInt(inputValue);
-        }else{
-          //aplica aumento masivo
-          row = this.idIndexOf(itemId);
-          //update cost
-          let mult = parseInt( (parseInt(this.items[row].unitCost) * (100 + parseInt(percent)))) ;
-         this.items[row].cost_price = parseInt( mult /100);
+        }
+        let row = this.idIndexOf(itemId);   //Row
+        if (e && e.target.value === ''){ //BORRADO MANUAL
+          console.log("borrado manual")
+          this.items[row].cost_price = null;
+          this.items[row].unit_price = null;
+          this.items[row].rise = null;
+          this.items[row].profit = null;
+        }else{  
+            if(!percent){
+              console.log("aumento manual de costo")
+              //aAUMENTO MANUAL DE COSTO
+              this.items[row].cost_price = parseFloat(e.target.value);
+            }else{
+              console.log("aumento masivo costo")
+              //AUMENTO MASIVO DE COSTO, con itemId ya identificado
+              //update cost
+              this.items[row].cost_price = Number.parseFloat( (parseFloat(this.items[row].unitCost) * (100 + parseFloat(percent))) /100).toFixed(2);
+            }
+          
+            //ACTUALIZACIÓN DE PRECIO SEGÚN COSTO (MANUAL Y MASIVO)
+            console.log("actualizacion precio manual y masivo")
+            //Aumento = ( nuevo costo - costo anterior) * 100) / costo anterior
+             this.items[row].rise =  Number.parseFloat(( ( parseFloat(this.items[row].cost_price) - parseFloat(this.items[row].unitCost)) * 100 ) / parseFloat(this.items[row].unitCost)).toFixed(2) 
+            //Rentabilidad = ( ( precio - costo ) * 100 ) / costo
+            let profit = ( ( parseFloat(this.items[row].unitPrice) - parseFloat(this.items[row].unitCost )) * 100) / parseFloat(this.items[row].unitCost);
+            this.items[row].profit = Number.parseFloat(profit).toFixed(2)
+            //Precio = costo + ( ( costo * rentabilidad ) * 100 )
+            this.items[row].unit_price = Math.round(parseFloat(this.items[row].cost_price) + ( ( parseFloat(this.items[row].cost_price)  * profit) / 100 )); //asigno nuevo precio
         }
        
-       if (inputValue === ''){ //caso en que se borra manual
-         this.items[row].cost_price = null;
-         this.items[row].unit_price = null;
-         this.items[row].rise = null;
-         this.items[row].profit = null;
-        }else{
-          //update price
-          let prevCost = this.items[row].unitCost;
-          let prevPrice = this.items[row].unitPrice;
-          let prevDiff = prevPrice - prevCost;
-          let prevRent = (prevDiff * 100) / prevCost;
-          let newCost = Math.round(this.items[row].cost_price);
-          this.items[row].unit_price = Math.round(newCost + ( newCost  * prevRent / 100));
-          let costDiff = newCost - prevCost;
-          //update Aumento y Rentabilidad
-          let incremenet = (costDiff * 100) / prevCost;
-          this.items[row].rise = Math.round(incremenet + Number.EPSILON * 100) / 100; //porcentaje aumento
-          this.items[row].profit  =  Math.round(incremenet + Number.EPSILON * 100) / 100;  //porcentaje rentabilidad
-        }
       },
        updatePrice(e){
         let itemId = e.target.id.substring(1);
