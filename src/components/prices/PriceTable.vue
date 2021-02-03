@@ -41,14 +41,14 @@
           <td class="d-block d-sm-table-cell">
              {{item.update}}
           </td>
-          <td class="d-block d-sm-table-cell">
+          <td class="d-block d-sm-table-cell cost">
              {{item.unitCost}}
           </td>
           <td class="d-block d-sm-table-cell">
              {{item.unitPrice}}
           </td>
           <td class="d-block d-sm-table-cell">
-             <input class="newValues" :value="item.cost_price" :id="'c'+item.item_id" @change="updateCost" type="text">
+             <input class="newValues cost" :value="item.cost_price" :id="'c'+item.item_id" @change="updateCost" type="text">
           </td>
           <td class="d-block d-sm-table-cell" :id="'a'+item.item_id">
               <v-chip text-color="white"
@@ -129,11 +129,11 @@ export default {
        updatePrice(e){
         let itemId = e.target.id.substring(1);
         let row =   this.idIndexOf(itemId);
-        let inputValue = e.target.value;
-        this.items[row].unit_price = parseInt(inputValue);
+        this.items[row].unit_price = parseInt(e.target.value);
 
         //calculate new revenue
-        this.items[row].profit =  Number.parseFloat((parseFloat(this.items[row].unit_price) - parseFloat(this.items[row].cost_price) * 100) / parseFloat(this.items[row].cost_price)).toFixed(2);
+         //Rentabilidad = ( ( nuevo precio - nuevo costo ) * 100 ) / nuevo costo
+        this.items[row].profit =  Number.parseFloat(( ( parseFloat(this.items[row].unit_price) - parseFloat(this.items[row].cost_price )) * 100) / parseFloat(this.items[row].cost_price)).toFixed(2);
        
       },
       idIndexOf(itemId){
@@ -198,5 +198,10 @@ export default {
   border-width: thin;
   width: 90px;
   padding-right: 5px;
+  font-weight: 500;
 }
+.cost {
+  color: blue;
+}
+
 </style>

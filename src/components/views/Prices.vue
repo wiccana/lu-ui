@@ -14,12 +14,12 @@
 
 <script>
 import axios from 'axios';
-import PriceTable from './PriceTable.vue'
-import PriceFilter from './PriceFilter.vue'
-import PriceConfirm from './PriceConfirm.vue'
+import PriceTable from '../prices/PriceTable.vue'
+import PriceFilter from '../prices/PriceFilter.vue'
+import PriceConfirm from '../prices/PriceConfirm.vue'
 
 export default {
-  name: 'PriceScreen',
+  name: 'Prices',
   components: {
     PriceFilter,
     PriceTable,
