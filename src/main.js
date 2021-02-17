@@ -8,6 +8,7 @@ import '@babel/polyfill'
 import '@mdi/font/css/materialdesignicons.css'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 
+// Vue.prototype.$apiUrl = 'http://localhost:8080'
 Vue.prototype.$apiUrl = 'http://localhost:8080'
 Vue.prototype.$minRisePercent = 0.5
 Vue.prototype.$minRentPercent = 55

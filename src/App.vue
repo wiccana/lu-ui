@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar
       app
-      color="secondary"
+      color="black"
       dark
     >
     <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
@@ -28,6 +28,7 @@
       v-model="drawer"
       absolute
       temporary
+      width="350px"
     >
       <v-list
         nav
@@ -35,7 +36,7 @@
       >
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="orange--text text--accent-4"
         >
             <router-link to="/"> 
                 <v-list-item>
@@ -54,7 +55,7 @@
                         <v-icon>mdi-cash-check</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title> 
-                          Cash
+                          Flujo de Efectivo
                     </v-list-item-title>
                 </v-list-item>
             </router-link>  
@@ -65,7 +66,7 @@
                         <v-icon>mdi-sale</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title> 
-                          Prices
+                          Actualización de Precios
                     </v-list-item-title>
                 </v-list-item>
             </router-link>  
@@ -97,3 +98,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.menu-item{
+  font-size: 1rem;
+}
+</style> 
+
+
+
