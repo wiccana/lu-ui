@@ -11,7 +11,7 @@
   >
   </v-data-table>
 <div class="summary">
-  <v-btn color="primary summary-item"
+          <v-btn color="primary summary-item"
             @click="getTransactions">
             Actualizar
           <v-icon
@@ -25,13 +25,18 @@
            <v-text-field style="width: 150px; padding: 20px" class="summary-item"
             v-model="startAmount"
             counter="50"
+            type="number"
             label="Monto Inicial"
+            @change="getFinalAmount"
           ></v-text-field>
 
         <div class="summary-item">
-          Monto Final:
-          {{finalAmount}}
-         </div>
+          <p>Monto final 
+           <v-chip class="ma-2" color="primary" >
+       {{finalAmount}}
+           </v-chip>
+          </p>
+        </div>
 </div>
  
 </div>
@@ -66,16 +71,29 @@ export default {
     },
     methods: {
       getTransactions(){
-         axios.get(this.$apiUrl+"/transaction?paymentType=cash").then((result) => {
-        this.items = result.data;
-        this.getFinalAmount();
+        axios.get(this.$apiUrl+"/transaction?paymentType=cash").then((result) => {
+        this.items = [];
+        result.data.forEach(item => {
+          if (item.transactionType == "Expense" ){
+            item.amount =  parseInt(item.amount) * -1;
+          }if (item.transactionType == "Receiving"){
+            item.amount =  item.amount == null ? 0 : parseInt(item.amount) * -1;
+          }
+          this.items.push(item) 
+        });
+        this.selected = this.items;
+        
          })
       },
       getFinalAmount(){
-        console.log("calculando")
         this.finalAmount=0;  
-        this.selected.forEach(element => this.finalAmount += element.amount);
-        this.finalAmount+=this.startAmount;
+        this.selected.forEach(element => this.finalAmount += parseInt(element.amount) );
+        this.finalAmount += parseInt(this.startAmount);
+      }
+    },
+    watch: {
+      selected: {
+        handler: function () {this.getFinalAmount();}
       }
     }
   }
