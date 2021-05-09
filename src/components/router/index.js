@@ -2,8 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Home from "../Home.vue";
-import Prices from "../views/Prices.vue"
 import Cash from "../views/Cash.vue"
+import Prices from "../views/Prices.vue"
+import Transactions from "../views/Transactions.vue"
 
 Vue.use(VueRouter);
 
@@ -23,11 +24,6 @@ const routes = [
     meta: {
       title: 'Actualización de Precios',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () =>
-    //   import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
     path: "/cash",
@@ -35,6 +31,14 @@ const routes = [
     component: Cash,
     meta: {
       title: 'Flujo de Efectivo',
+    }
+  },
+  {
+    path: "/transactions",
+    name: "Transactions",
+    component: Transactions,
+    meta: {
+      title: 'Transacciones',
     }
   }
 ];
