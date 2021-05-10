@@ -14,6 +14,7 @@
       ></v-text-field>
     
         <TransactionTypeSelect  @set-transaction-type="setTransactionType"></TransactionTypeSelect>
+        <PaymentTypeSelect  @set-payment-type="setPaymentType"></PaymentTypeSelect>
 
   </div>
    <v-data-table
@@ -61,10 +62,12 @@
 <script>
 import axios from 'axios';
 import TransactionTypeSelect from '../transactions/TransactionTypeSelect.vue'
+import PaymentTypeSelect from '../transactions/PaymentTypeSelect.vue'
 export default {
   name: 'Transactions',
    components: {
-    TransactionTypeSelect
+    TransactionTypeSelect,
+    PaymentTypeSelect
     },
     data () {
       return {
@@ -72,6 +75,7 @@ export default {
         startAmount: 0,
         finalAmount: 0,
         transactionTypeParam: '',
+        paymentTypeParam: '',
         singleSelect: false,
         selected: [],
         items: [],
@@ -93,17 +97,25 @@ export default {
     },
     methods: {
       setTransactionType: function(transactionType){
-        console.log('transaction', transactionType)
         if (transactionType.length == 0){
             this.transactionTypeParam = '';
         }else{
           this.transactionTypeParam = '&transactionType=' + transactionType
         }
-        console.log(this.transactionTypeParam)
+          this.getTransactions();
+      }, 
+      setPaymentType: function(paymentType){
+        console.log('paymentType', paymentType)
+        if (paymentType.length == 0){
+            this.paymentTypeParam = '';
+        }else{
+          this.paymentTypeParam = '&paymentType=' + paymentType
+        }
+        console.log(this.paymentTypeParam)
           this.getTransactions();
       }, 
       getTransactions(){
-        axios.get(this.$apiUrl+"/transaction?paymentType=cash&" + this.dateRange + this.transactionTypeParam).then((result) => {
+        axios.get(this.$apiUrl+"/transaction?" + this.dateRange + this.transactionTypeParam + this.paymentTypeParam).then((result) => {
         this.items = [];
         result.data.forEach(item => {
           if (item.transactionType == "Expense" ){

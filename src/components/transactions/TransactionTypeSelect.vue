@@ -8,7 +8,7 @@
           multiple
           hint="Seleccione tipo de transacción"
           persistent-hint
-           @change="selectTransaction"
+           @change="selectTransactionType"
         ></v-select>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
         ],
     }),
   methods: {
-      selectTransaction: function() {
+      selectTransactionType: function() {
         this.$emit('set-transaction-type', this.selectedTransactionTypes);
      }
     }
