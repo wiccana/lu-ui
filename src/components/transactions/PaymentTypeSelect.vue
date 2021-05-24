@@ -5,7 +5,6 @@
           :items="paymentTypes"
           :menu-props="{ maxHeight: '400' }"
           label="Tipo de Pago"
-          multiple
           hint="Seleccione tipo de pago"
           persistent-hint
            @change="selectPaymentType"

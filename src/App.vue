@@ -74,7 +74,7 @@
              <router-link to="/transactions"> 
                 <v-list-item>
                     <v-list-item-icon>
-                        <v-icon>mdi-sale</v-icon>
+                        <v-icon>mdi-briefcase-check-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title> 
                           Transacciones

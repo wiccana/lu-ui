@@ -5,11 +5,11 @@
           :items="transactionTypes"
           :menu-props="{ maxHeight: '400' }"
           label="Transaccion"
-          multiple
           hint="Seleccione tipo de transacción"
           persistent-hint
            @change="selectTransactionType"
         ></v-select>
+
   </div>
 </template>
 <script>
@@ -18,7 +18,7 @@ export default {
   data: () => ({
         selectedTransactionTypes: [],
         transactionTypes: [
-          'expense', 'sale', 'receiving'
+          '', 'expense', 'sale', 'receiving'
         ],
     }),
   methods: {
