@@ -17,7 +17,7 @@ export default {
   data: () => ({
         selectedPaymentTypes: [],
         paymentTypes: [
-          'cash', 'debit'
+          '','cash', 'debit'
         ],
     }),
   methods: {

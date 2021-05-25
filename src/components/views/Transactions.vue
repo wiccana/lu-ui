@@ -4,11 +4,13 @@
    
       <v-date-picker
         v-model="dates"
+         
         range
       ></v-date-picker>
       <v-text-field
         v-model="dateRangeText"
         label="Período"
+        @change="getTransactions"
         prepend-icon="mdi-calendar"
         readonly
       ></v-text-field>
@@ -50,7 +52,7 @@
         <div class="summary-item">
           <p>Monto final 
            <v-chip class="ma-2" color="primary" >
-       {{finalAmount}}
+       {{formattedFinalAmout}}
            </v-chip>
           </p>
         </div>
@@ -102,16 +104,16 @@ export default {
         }else{
           this.transactionTypeParam = '&transactionType=' + transactionType
         }
+        console.log('transactionType',this.transactionType)
           this.getTransactions();
       }, 
       setPaymentType: function(paymentType){
-        console.log('paymentType', paymentType)
         if (paymentType.length == 0){
             this.paymentTypeParam = '';
         }else{
           this.paymentTypeParam = '&paymentType=' + paymentType
         }
-        console.log(this.paymentTypeParam)
+        console.log('paymentType',this.paymentTypeParam)
           this.getTransactions();
       }, 
       getTransactions(){
@@ -141,7 +143,13 @@ export default {
       },
       dateRange () {
           return 'fromDate='+this.dates[0]+'&toDate='+(this.dates[1] == undefined ?this.dates[0]:this.dates[1])
-      }
+      },
+      formattedFinalAmout() {
+        return this.finalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      },
+      //  formattedStartAmout() {
+      //   return this.startAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      // }
   
     },
     watch: {
